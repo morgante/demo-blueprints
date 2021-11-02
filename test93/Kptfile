@@ -1,0 +1,33 @@
+apiVersion: kpt.dev/v1
+kind: Kptfile
+metadata:
+  name: test93
+  annotations:
+    blueprints.cloud.google.com/title: 'test'
+    cft.dev/base-version: '1'
+    cft.dev/package-version: '1'
+upstream:
+  type: git
+  git:
+    repo: https://github.com/morgante/demo-blueprints
+    directory: /basens
+    ref: main
+  updateStrategy: resource-merge
+upstreamLock:
+  type: git
+  git:
+    repo: https://github.com/morgante/demo-blueprints
+    directory: /basens
+    ref: main
+    commit: 0d63c6a341f7572dc199faf67b7d4ae2c234600a
+info:
+  description: test
+  keywords:
+  - tenant
+pipeline:
+  mutators:
+  - image: gcr.io/cad-demo-sdk/set-namespace:latest
+  validators:
+  - image: gcr.io/kpt-fn/kubeval:v0.1
+    configMap:
+      ignore_missing_schemas: 'true'
